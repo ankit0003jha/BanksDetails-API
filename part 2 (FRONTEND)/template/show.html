@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock title %}
+
+
+{% block content %}
+
+
+
+<script type="text/javascript">
+    function searchdata() {
+
+        var inputs, table, tr, td, filter, i, displaydata;
+        inputs = document.getElementById("dropdownsearch");
+        filter = inputs.value.toUpperCase();
+        table = document.getElementById("bootstrapdatatable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[8];
+            if (td) {
+                displaydata = td.innerText;
+                if (displaydata.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+
+        }
+
+
+    }
+</script>
+
+<style>
+    .no-js #loader {
+        display: none;
+    }
+
+    .js #loader {
+        display: block;
+        position: absolute;
+        left: 100px;
+        top: 0;
+    }
+
+    .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url(https://smallenvelop.com/wp-content/uploads/2014/08/Preloader_11.gif) center no-repeat #fff;
+    }
+</style>
+
+
+
+
+<div class="se-pre-con"></div>
+<div class="table-responsive">
+    <br/>
+
+
+    <!-- city selector  -->
+
+
+    <select id="dropdownsearch" onclick="searchdata();">
+        <option disabled value="" selected>
+            Select city
+        </option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Bangalore">Bangalore</option>
+        <option value="Delhi">Delhi</option>
+        <option value="Chhatisgarh">Chhatisgarh</option>
+        <option value="jaipur">jaipur</option>
+    </select>
+    <br />
+
+    <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%"><br>
+        <thead>
+            <tr>
+                <th>fav</th>
+                <th>IFSC</th>
+                <th>Bank Id</th>
+                <th>Branch</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>District</th>
+                <th>State</th>
+                <th>Bank Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for r in response %}
+            <tr>
+                <td><input type="checkbox" id="check" class="checkthis" autocomplete="off"/></td>
+                
+                <td>{{ r.ifsc }}</td>
+                <td>{{ r.bank_id }}</td>
+                <td>{{ r.branch }}</td>
+                <td>{{ r.address }}</td>
+                <td>{{ r.city }}</td>
+                <td>{{ r.district }}</td>
+                <td>{{ r.state }}</td>
+                <td>{{ r.bank_name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+
+<script>
+    $(window).load(function () {
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");;
+    });
+</script>
+
+
+<script>
+$(function(){
+    var test = localStorage.input === 'true'? true: false;
+    $('input').prop('checked', test || false);
+});
+
+$('input').on('change', function() {
+    localStorage.input = $(this).is(':checked');
+    console.log($(this).is(':checked'));
+});
+</script>
+{% endblock content %}
